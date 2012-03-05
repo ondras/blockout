@@ -87,14 +87,13 @@ Cube.prototype.getNode = function() {
 var Pit = OZ.Class();
 Pit.SIZE = 5;
 Pit.DEPTH = 10;
-Pit.prototype.init = function() {
-	this._node = OZ.DOM.elm("div");
-	this._content = OZ.DOM.elm("div", {className:"pit", width:Pit.SIZE*Face.SIZE + "px", height:Pit.SIZE*Face.SIZE + "px"});
+Pit.prototype.init = function(container) {
+	this._node = OZ.DOM.elm("div", {className:"pit", width:Pit.SIZE*Face.SIZE + "px", height:Pit.SIZE*Face.SIZE + "px"});
 
-	OZ.CSS3.set(this._node, "perspective", "460px");
-	OZ.CSS3.set(this._content, "transform-style", "preserve-3d");
+	OZ.CSS3.set(container, "perspective", "460px");
+	OZ.CSS3.set(this._node, "transform-style", "preserve-3d");
 	
-	this._node.appendChild(this._content);
+	container.appendChild(this._node);
 	
 	this._data = [];
 	for (var i=0;i<Pit.SIZE;i++) {
@@ -161,6 +160,8 @@ Pit.prototype._tick = function() {
 
 Pit.prototype._finalizeShape = function() {
 	var cubes = this._currentShape.getCubes();
+	this.dispatch("score", {score:cubes.length});
+	
 	var position = this._currentShape.getPosition();
 	
 	for (var i=0;i<cubes.length;i++) {
@@ -169,7 +170,7 @@ Pit.prototype._finalizeShape = function() {
 		
 		var node = cube.cube.getNode();
 		OZ.DOM.addClass(node, "l" + (this.constructor.DEPTH-cube.position[2]));
-		this._content.appendChild(node);
+		this._node.appendChild(node);
 		cube.cube.setPosition(cube.position);
 		this._cubes.push(cube.cube);
 	}
@@ -191,10 +192,15 @@ Pit.prototype._checkFloors = function() {
 	}
 	
 	var max = this.constructor.SIZE * this.constructor.SIZE;
+	var score = 0;
+	var scoreFactor = 100;
 	
 	for (var i=this.constructor.DEPTH-1;i>=0;i--) {
 		if (counts[i] < max) { continue; }
 		/* remove the floor */
+		
+		score += scoreFactor;
+		scoreFactor += scoreFactor;
 		
 		for (var j=0;j<this._cubes.length;j++) {
 			var cube = this._cubes[j];
@@ -205,7 +211,7 @@ Pit.prototype._checkFloors = function() {
 				node.parentNode.removeChild(node);
 				this._cubes.splice(j, 1);
 				j--;
-			} else {
+			} else if (pos[2] < i) {
 				OZ.DOM.removeClass(node, "l" + (this.constructor.DEPTH-pos[2]));
 				pos[2]++;
 				OZ.DOM.addClass(node, "l" + (this.constructor.DEPTH-pos[2]));
@@ -215,12 +221,14 @@ Pit.prototype._checkFloors = function() {
 		
 	} /* for all floors */
 	
+	if (score) { this.dispatch("score", {score:score}); }
+	
 }
 
 Pit.prototype._newShape = function() {
 	this._currentShape = Shape.new2x2(this);
 	this._currentShape._useCSS = true;
-	this._content.appendChild(this._currentShape.getNode());
+	this._node.appendChild(this._currentShape.getNode());
 	window.s = this._currentShape;
 	
 	if (this._currentShape.collides()) { this._currentShape = null; }
@@ -235,29 +243,43 @@ Pit.prototype._newShape = function() {
 
 var Game = OZ.Class();
 Game.prototype.init = function() {
-	this._pit = new Pit();
-	document.body.appendChild(this._pit.getNode());
-	this._pit.start();
+	this._pit = null;
+	this._score = new Score(OZ.$("score"));
 	
+	setInterval(function() {
+		OZ.$("divs").innerHTML = document.getElementsByTagName("div").length;
+	}, 100);
+	
+	this._play();
+}
+
+Game.prototype._play = function() {
 	OZ.Event.add(window, "keydown", this._keydown.bind(this));
+	this._pit = new Pit(OZ.$("game"));
+	this._pit.start();
 }
 
 Game.prototype._keydown = function(e) {
 	var shape = this._pit.getShape();
 	if (!shape) { return; }
 	
+	
 	switch (e.keyCode) {
 		case 37:
 			shape.move([-1, 0, 0]);
+			OZ.Event.prevent(e);
 		break;
 		case 38:
 			shape.move([0, -1, 0]);
+			OZ.Event.prevent(e);
 		break;
 		case 39:
 			shape.move([1, 0, 0]);
+			OZ.Event.prevent(e);
 		break;
 		case 40:
 			shape.move([0, 1, 0]);
+			OZ.Event.prevent(e);
 		break;
 		
 		case 13:
@@ -287,3 +309,4 @@ Game.prototype._keydown = function(e) {
 		break;
 	}
 }
+

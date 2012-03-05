@@ -1,10 +1,24 @@
 <html>
-	<head></head>
-	<script src="js/oz.js"></script>
-	<script src="js/css3.oz.js"></script>
-	<script src="js/quaternion.js"></script>
-	<script src="js/blockout.js"></script>
-	<script src="js/shape-old.js"></script>
-	<link rel="stylesheet" href="css/style.css" />
-	<body onload="var g = new Game()"></body>
+	<head>
+		<title>CSS Blockout :: CSS 3D Transformations demo</title>
+		<script src="js/oz.js"></script>
+		<script src="js/css3.oz.js"></script>
+		<script src="js/quaternion.js"></script>
+		<script src="js/blockout.js"></script>
+		<script src="js/shape-old.js"></script>
+		<script src="js/score.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<h1>CSS Blockout</h1>
+		<p>No &lt;canvas&gt; used!<sup>*</sup></p>
+		<div id="help">
+			<h2>Help</h2>
+		</div>
+		<div id="score"></div>
+		<div id="game"></div>
+		<script>var g = new Game()</script>
+		<footer><sup>*</sup>Only <span id="divs"></span> divs <span id="smiley">;-)</span></footer>
+	</body>
 </html>

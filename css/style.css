@@ -1,3 +1,44 @@
+body {
+	background-color: #777;
+	color: white;
+	text-shadow: 0px 1px 1px black;
+	text-align: center;
+}
+
+h1, h2 {
+	font-family: "Black Ops One";
+}
+
+h1 {
+	font-size: 300%;
+}
+
+footer {
+	margin-top: 1em;
+}
+
+#help {
+	position: fixed;
+	left: 0px;
+	top: 50px;
+	background-color: #555;
+	border-radius: 0px 20px 20px 0px;
+	padding: 1em;
+}
+
+#score {
+	position: fixed;
+	right: 0px;
+	top: 50px;
+	background-color: #555;
+	border-radius: 20px 0px 0px 20px;
+	padding: 1em;
+}
+
+#help h2, #score h2 {
+	margin-top: 0em;
+}
+
 .face {
 	border: 2px solid black;
 /*	background-color: blue; */
