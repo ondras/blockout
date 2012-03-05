@@ -1,14 +1,46 @@
 .face {
 	border: 2px solid black;
-	background-color: blue;
-/*	background-color: rgba(255, 255, 255, 0.5); */
+/*	background-color: blue; */
+	background-color: rgba(255, 255, 255, 0.5); 
 }
 
 .pit {
-	margin: 5em auto 0;
+	margin: 1em auto 0;
 	border: 2px solid black;
-	
 }
 
-.cube {
+.cube.l1 .face {
+	background-color: green;
+}
+
+.cube.l2 .face {
+	background-color: orange;
+}
+
+.cube.l3 .face {
+	background-color: red;
+}
+
+.cube.l4 .face {
+	background-color: blue;
+}
+
+.cube.l5 .face {
+	background-color: yellow;
+}
+
+.cube.l6 .face {
+	background-color: lime;
+}
+
+.cube.l7 .face {
+	background-color: brown;
+}
+
+.cube.l8 .face {
+	background-color: navy;
+}
+
+.cube.l9 .face {
+	background-color: teal;
 }

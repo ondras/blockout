@@ -53,3 +53,17 @@ Quaternion.prototype.toRotation = function() {
 	var angle = this.toAngle();
 	return "rotate3d(" + axis[0].toFixed(10) + "," + axis[1].toFixed(10) + "," + axis[2].toFixed(10) + "," + angle.toFixed(10) + "deg)";
 }
+
+Quaternion.prototype.toRotations = function() {
+	var RAD2DEG = 180/Math.PI;
+	
+	var x = RAD2DEG * Math.atan2(2*(this.w*this.x + this.y*this.z), 1 - 2*(this.x*this.x + this.y*this.y));
+	var y = RAD2DEG * Math.asin(2*(this.w*this.y - this.x*this.z));
+	var z = RAD2DEG * Math.atan2(2*(this.w*this.z + this.x*this.y), 1 - 2*(this.y*this.y + this.z*this.z));
+	
+	if (x < 0) { x += 360; }
+	if (y < 0) { y += 360; }
+	if (z < 0) { z += 360; }
+	
+	return "rotateX(" + x.toFixed(10) + "deg) rotateY(" + y.toFixed(10) + "deg) rotate(" + z.toFixed(10) + "deg)";
+}
