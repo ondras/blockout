@@ -1,16 +1,6 @@
 var Shape = OZ.Class();
 
-Shape.new2x2 = function(pit) {
-	var shape = new this(pit);
-	shape.addCube([0, 0, 0]);
-	shape.addCube([1, 0, 0]);
-	shape.addCube([2, 0, 0]);
-//	shape.addCube([0, 1, 0]);
-//	shape.addCube([0, 0, 1]);
-//	shape.addCube([0, 1, 0]);
-//	shape.addCube([1, 1, 0]);
-	return shape;
-}
+Shape.SPEED = 300;
 
 Shape.prototype.init = function(pit, useCSS) {
 	this._useCSS = useCSS;
@@ -20,7 +10,7 @@ Shape.prototype.init = function(pit, useCSS) {
 	this._node = OZ.DOM.elm("div", {className:"shape", position:"absolute", left:"0px", top:"0px"});
 	OZ.CSS3.set(this._node, "transform-style", "preserve-3d");
 	var prop = OZ.CSS3.getProperty("transform");
-	OZ.CSS3.set(this._node, "transition", prop + " 300ms");
+	OZ.CSS3.set(this._node, "transition", prop + " " + this.constructor.SPEED + "ms");
 
 	this._position = [0, 0, 0];
 	this._oldPosition = null;
@@ -49,7 +39,7 @@ Shape.prototype.addCube = function(position) {
 	this._node.appendChild(cube.getNode());
 
 	this._updatePosition();
-	return this;
+	return cube;
 }
 
 Shape.prototype.getCubes = function() {

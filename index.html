@@ -1,24 +1,37 @@
+<!doctype html>
 <html>
 	<head>
+		<meta charset="utf-8" />
 		<title>CSS Blockout :: CSS 3D Transformations demo</title>
 		<script src="js/oz.js"></script>
 		<script src="js/css3.oz.js"></script>
 		<script src="js/quaternion.js"></script>
 		<script src="js/blockout.js"></script>
 		<script src="js/shape-old.js"></script>
+		<script src="js/shapes.js"></script>
 		<script src="js/score.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
 		<h1>CSS Blockout</h1>
-		<p>No &lt;canvas&gt; used!<sup>*</sup></p>
+		<p>No &lt;canvas&gt; used &ndash; only <span id="divs"></span> divs <span id="smiley">:-)</span></p>
 		<div id="help">
 			<h2>Help</h2>
 		</div>
 		<div id="score"></div>
-		<div id="game"></div>
-		<script>var g = new Game()</script>
-		<footer><sup>*</sup>Only <span id="divs"></span> divs <span id="smiley">;-)</span></footer>
+		<div id="game">
+			<p>This game is a three-dimensional Tetris variation: your goal is to 
+			stack pieces falling into a pit while rotating them in order to completely fill pit levels.</p>
+			<div id="play">
+				<h2>Play</h2>
+				<a href="#">Simple (flat pieces)</a>
+				<a href="#">Advanced (3D pieces)</a>
+			</div>
+		</div>
+		<div id="gameover">
+			<h2>Game over</h2>
+		</div>
+		<footer>&copy; 2012 <a href="http://ondras.zarovi.cz/">Ondřej Žára</a></footer>
+		<script>new Game()</script>
 	</body>
 </html>
