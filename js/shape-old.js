@@ -1,6 +1,6 @@
 var Shape = OZ.Class();
 
-Shape.SPEED = 300;
+Shape.SPEED = 200;
 
 Shape.prototype.init = function(pit, useCSS) {
 	this._useCSS = useCSS;

@@ -30,6 +30,14 @@ p {
 	margin-top: 0em;
 }
 
+#game {
+	margin: 1em auto 0;	
+}
+
+#game.playing {
+	background-color: black;
+}
+
 #game p {
 	width: 50%;
 	margin: 2em auto;
@@ -68,6 +76,31 @@ p {
 	border-radius: 0px 20px 20px 0px;
 }
 
+#help img {
+	width: 100px;
+	height: 100px;
+}
+
+#help div {
+	position: relative;
+}
+
+#help .keys {
+	position: absolute;
+	left: 0px;
+	top: 64px;
+}
+
+#help .keys span {
+	width: 28px;
+	line-height: 28px;
+	text-align: center;
+	display: inline-block;
+	border: 3px solid #888;
+	border-radius: 10px;
+	background-color: rgba(80, 80, 80, 0.8);
+}
+
 #score {
 	position: fixed;
 	right: 0px;
@@ -90,11 +123,6 @@ p {
 .face {
 	border: 2px solid black;
 	background-color: rgba(255, 255, 255, 0.5); 
-}
-
-.pit {
-	margin: 1em auto 0;
-	border: 2px solid black;
 }
 
 .cube.l1 .face {

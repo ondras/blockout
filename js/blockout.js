@@ -41,7 +41,7 @@ Face.prototype.init = function(type) {
 		case Face.FRONT:
 		break;
 		case Face.BACK:
-			OZ.CSS3.set(this._node, "transform", "translate3d(0px, 0px, -"+Face.SIZE+"px)");
+			OZ.CSS3.set(this._node, "transform", "translate3d(0px, 0px, -"+Face.SIZE+"px) rotateY(180deg)");
 		break;
 	}
 }
@@ -101,24 +101,18 @@ var Pit = OZ.Class();
 Pit.SIZE = 5;
 Pit.DEPTH = 10;
 Pit.prototype.init = function(container, advanced) {
-	this._node = OZ.DOM.elm("div", {className:"pit", width:Pit.SIZE*Face.SIZE + "px", height:Pit.SIZE*Face.SIZE + "px"});
 	this._advanced = advanced;
 
+	this._node = OZ.DOM.elm("div", {className:"pit", width:Pit.SIZE*Face.SIZE + "px", height:Pit.SIZE*Face.SIZE + "px"});
+	container.style.width = Pit.SIZE*Face.SIZE + "px";
+	container.style.height = Pit.SIZE*Face.SIZE + "px";
+	
 	OZ.CSS3.set(container, "perspective", "460px");
 	OZ.CSS3.set(this._node, "transform-style", "preserve-3d");
 	
 	container.appendChild(this._node);
-	
-	this._data = [];
-	for (var i=0;i<Pit.SIZE;i++) {
-		this._data.push([]);
-		for (var j=0;j<Pit.SIZE;j++) {
-			this._data[i].push([]);
-			for (var k=0;k<Pit.DEPTH;k++) {
-				this._data[i][j].push(false);
-			}
-		}
-	}
+
+	this._buildWalls();
 	
 	this._cubes = [];
 	this._ts = null;
@@ -262,6 +256,45 @@ Pit.prototype._newShape = function() {
 */
 }
 
+Pit.prototype._buildWalls = function() {
+	var parent = this._node;
+	var newWall = function() {
+		var wall = OZ.DOM.elm("div", {position:"absolute", left:"0px", top:"0px"});
+		wall.style.backgroundImage = "url(img/bg.png)";
+		wall.style.width = Pit.SIZE * Face.SIZE + "px";
+		wall.style.height = Pit.SIZE * Face.SIZE + "px";
+		parent.appendChild(wall);
+		return wall;
+	}
+
+	var wall = newWall();
+	OZ.CSS3.set(wall, "transform", "translateZ(" + (- Pit.DEPTH * Face.SIZE) + "px)");
+
+	var wall = newWall();
+	wall.style.width = Pit.DEPTH * Face.SIZE + "px";
+	OZ.CSS3.set(wall, "transform-origin", "0% 50%");
+	OZ.CSS3.set(wall, "transform", "rotateY(90deg)");
+	
+	var wall = newWall();
+	wall.style.width = Pit.DEPTH * Face.SIZE + "px";
+	wall.style.left = "";
+	wall.style.right = "0px";
+	OZ.CSS3.set(wall, "transform-origin", "100% 50%");
+	OZ.CSS3.set(wall, "transform", "rotateY(-90deg)");
+
+	var wall = newWall();
+	wall.style.height = Pit.DEPTH * Face.SIZE + "px";
+	OZ.CSS3.set(wall, "transform-origin", "50% 0%");
+	OZ.CSS3.set(wall, "transform", "rotateX(-90deg)");
+
+	var wall = newWall();
+	wall.style.height = Pit.DEPTH * Face.SIZE + "px";
+	wall.style.top = "";
+	wall.style.bottom = "0px";
+	OZ.CSS3.set(wall, "transform-origin", "50% 100%");
+	OZ.CSS3.set(wall, "transform", "rotateX(90deg)");
+}
+
 var Game = OZ.Class();
 Game.prototype.init = function() {
 	this._pit = null;
@@ -280,15 +313,15 @@ Game.prototype.init = function() {
 	setInterval(function() {
 		OZ.$("divs").innerHTML = document.getElementsByTagName("div").length;
 	}, 100);
-	
-//	this._play();
 }
 
 Game.prototype._play = function(advanced) {
-	OZ.DOM.clear(OZ.$("game"));
+	var node = OZ.$("game");
+	OZ.DOM.clear(node);
+	OZ.DOM.addClass(node, "playing");
 	
 	OZ.Event.add(window, "keydown", this._keydown.bind(this));
-	this._pit = new Pit(OZ.$("game"), advanced);
+	this._pit = new Pit(node, advanced);
 	this._pit.start();
 }
 
